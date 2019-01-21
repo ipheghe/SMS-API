@@ -119,4 +119,44 @@ export default class SmsController {
     })
     .catch((err) => handleErrorMessage(res, 500, err));
   }
+
+  /**
+   * @description Read message
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} response data object
+   */
+  static readMessage(req, res) {
+    Sms.findOne({
+      where: {
+        id: req.params.smsId,
+        receiverId: req.params.receiverId,
+      },
+      include: [
+        {
+          model: Contact,
+          as: 'sender',
+          attributes: ['name', 'phoneNumber'],
+        },
+      ],
+    })
+    .then((message) => {
+      if (!message) {
+        return handleErrorMessage(res, 404, 'Contact has no message history');
+      } else {
+        if (message.smsStatus === 'UNREAD') {
+          return message.update({ smsStatus: 'READ' })
+            .then((updatedMessage) => handleSuccessMessage(
+              res,
+              200,
+              updatedMessage,
+              'Text message viewed successfully.'))
+              .catch(err => handleErrorMessage(res, 500, err));
+        }
+        handleSuccessMessage(res, 200, message,'Text message viewed successfully.');
+      }
+    })
+    .catch((err) => handleErrorMessage(res, 500, err));
+  }
 }
