@@ -72,4 +72,20 @@ describe('<<< Contact Controller: ', () => {
         });
     });
   });
+
+  describe('Get A Contact: ', () => {
+    it('should return a single contact details', (done) => {
+      server
+        .get('/api/v1/contact/102')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.data.name).to.equal('Linda');
+          expect(res.body.message).to.equal('Contact retrieved successfully.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });

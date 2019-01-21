@@ -1,6 +1,9 @@
 import express from 'express';
 import ContactController from '../controllers';
-import { validateContactFields } from '../middlewares/contactValidation';
+import {
+  validateContactFields,
+  isContactValid,
+} from '../middlewares/contactValidation';
 
 const contactRoute = express.Router();
 
@@ -10,5 +13,8 @@ contactRoute
 
 // API route to get all contacts
 contactRoute.get('/api/v1/contact', ContactController.getAllContacts);
+
+// API route to get a contact
+contactRoute.get('/api/v1/contact/:contactId', isContactValid, ContactController.getContact);
 
 export default contactRoute;

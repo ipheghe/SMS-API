@@ -52,7 +52,7 @@ export default class ContactController {
     .catch(err => handleErrorMessage(res, 500, err));
   }
 
-   /**
+  /**
    * @description Get all contacts
    *
    * @param {Object} req - Express request object
@@ -93,6 +93,33 @@ export default class ContactController {
         const errorMessage = error.errors.map(value => value.message);
         handleErrorMessage(res, 400, errorMessage);
       })
+      .catch(err => handleErrorMessage(res, 500, err));
+  }
+
+  /**
+   * Get a contact
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} status message
+   */
+  static getContact(req, res) {
+    return Contact
+      .findById(req.params.contactId, {
+        include: [
+          {
+            model: Sms,
+            as: 'sentMessages',
+            attributes: ['message', 'createdAt'],
+          },
+          {
+            model: Sms,
+            as: 'receivedMessages',
+            attributes: ['message', 'createdAt'],
+          },
+        ],
+      })
+      .then((contact) => handleSuccessMessage(res, 200, contact, 'Contact retrieved successfully.'))
       .catch(err => handleErrorMessage(res, 500, err));
   }
 }
