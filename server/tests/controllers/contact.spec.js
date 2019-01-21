@@ -118,4 +118,19 @@ describe('<<< Contact Controller: ', () => {
         });
     });
   });
+
+  describe('Delete Contact: ', () => {
+    it('should return a success message after deleting a contact', (done) => {
+      server
+        .delete('/api/v1/contact/103')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Contact deleted successfully.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
