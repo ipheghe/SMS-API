@@ -27,4 +27,11 @@ smsRoute.get(
   SmsController.getAllMessagesSentByAContact
 );
 
+// API route for users to get all received SMS
+smsRoute.get(
+  '/api/v1/sms/received/:receiverId',
+  isReceiverValid,
+  SmsController.getAllMessagesReceivedByAContact
+);
+
 export default smsRoute;

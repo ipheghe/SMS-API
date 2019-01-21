@@ -90,4 +90,33 @@ export default class SmsController {
     })
     .catch((err) => handleErrorMessage(res, 500, err));
   }
+
+  /**
+   * @description Get all messages received by a contact
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} response data object
+   */
+  static getAllMessagesReceivedByAContact(req, res) {
+    Sms.findAll({
+      where: {
+        receiverId: req.params.receiverId,
+      },
+      include: [
+        {
+          model: Contact,
+          as: 'sender',
+          attributes: ['name', 'phoneNumber'],
+        },
+      ],
+    })
+    .then((messages) => {
+      if (messages.length < 1) {
+        return handleErrorMessage(res, 404, 'Contact has no message history');
+      }
+      handleSuccessMessage(res, 200, messages, 'All contact\'s received text messages retrieved successfully.');
+    })
+    .catch((err) => handleErrorMessage(res, 500, err));
+  }
 }

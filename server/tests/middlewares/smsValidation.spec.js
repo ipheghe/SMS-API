@@ -48,4 +48,32 @@ describe('<<< Sms Validation Middleware: ', () => {
         });
     });
   });
+
+  describe('Valid Receiver Validation: ', () => {
+    it('should return an error message for an invalid receiverId', (done) => {
+      server
+        .get('/api/v1/sms/received/c')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Please provide a valid ID');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should return an error message for a non-existent receiverId', (done) => {
+      server
+        .get('/api/v1/sms/received/192')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Receiver\'s account not available!');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
