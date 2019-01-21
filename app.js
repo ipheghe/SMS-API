@@ -6,6 +6,9 @@ import {
   smsRoute,
 } from './server/routes';
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 // Set up the express app
 const app = express();
 
@@ -15,6 +18,9 @@ app.use(logger('dev'));
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// route to view api-doc
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Require our routes into the application.
 app.use(contactRoute);
