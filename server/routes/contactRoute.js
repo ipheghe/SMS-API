@@ -17,4 +17,7 @@ contactRoute.get('/api/v1/contact', ContactController.getAllContacts);
 // API route to get a contact
 contactRoute.get('/api/v1/contact/:contactId', isContactValid, ContactController.getContact);
 
+// API route to update contact
+contactRoute.put('/api/v1/contact/:contactId', isContactValid, ContactController.updateContact);
+
 export default contactRoute;

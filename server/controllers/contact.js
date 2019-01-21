@@ -49,7 +49,7 @@ export default class ContactController {
           return handleErrorMessage(res, 400, errorMessage);
         });
     })
-    .catch(err => handleErrorMessage(res, 500, err));
+    .catch((err) => handleErrorMessage(res, 500, err));
   }
 
   /**
@@ -93,7 +93,7 @@ export default class ContactController {
         const errorMessage = error.errors.map(value => value.message);
         handleErrorMessage(res, 400, errorMessage);
       })
-      .catch(err => handleErrorMessage(res, 500, err));
+      .catch((err) => handleErrorMessage(res, 500, err));
   }
 
   /**
@@ -120,6 +120,38 @@ export default class ContactController {
         ],
       })
       .then((contact) => handleSuccessMessage(res, 200, contact, 'Contact retrieved successfully.'))
-      .catch(err => handleErrorMessage(res, 500, err));
+      .catch((err) => handleErrorMessage(res, 500, err));
+  }
+
+  /**
+   * Update a contact
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} status message
+   */
+  static updateContact(req, res) {
+    const {
+      name,
+      phoneNumber,
+    } = req.body;
+
+    Contact.find({ where: { id: req.params.contactId } })
+      .then((contact) => {
+        if (name || phoneNumber) {
+          return contact.update({
+            name: name ? name.trim() : contact.name,
+            phoneNumber: phoneNumber ? phoneNumber.trim() : contact.phoneNumber,
+          })
+          .then((updatedContact) => handleSuccessMessage(res, 200, updatedContact, 'Contact updated successfully.'))
+          .catch((error) => {
+            const errorMessage = error.errors.map(value => value.message);
+            handleErrorMessage(res, 400, errorMessage);
+          })
+          .catch((err) => handleErrorMessage(res, 500, err));
+        }
+        handleErrorMessage(res, 400, 'Please select a field to update');
+      })
+      .catch((err) => handleErrorMessage(res, 500, err));
   }
 }

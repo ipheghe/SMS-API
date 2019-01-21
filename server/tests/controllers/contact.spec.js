@@ -88,4 +88,34 @@ describe('<<< Contact Controller: ', () => {
         });
     });
   });
+
+  describe('Update Contact: ', () => {
+    it('displays success message after updating a contact successfully', (done) => {
+      server
+        .put('/api/v1/contact/101')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send({ name: 'James' })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Contact updated successfully.');
+          expect(res.body.data.name).to.equal('James');
+          if (err) return done(err);
+          done();
+        });
+      });
+
+    it('displays an error message if user does not input any value to update', (done) => {
+      server
+        .put('/api/v1/contact/102')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Please select a field to update');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
