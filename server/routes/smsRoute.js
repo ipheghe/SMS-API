@@ -8,7 +8,7 @@ import {
 
 const smsRoute = express.Router();
 
-// API route for users to create accounts
+// API route for users to create SMS
 smsRoute.post(
   '/api/v1/sms/:senderId/:receiverId',
   isSenderValid,
@@ -16,5 +16,8 @@ smsRoute.post(
   validateSmsFields,
   SmsController.createSms,
 );
+
+// API route for users to get all SMS
+smsRoute.get('/api/v1/sms', SmsController.getAllSmsMessages);
 
 export default smsRoute;

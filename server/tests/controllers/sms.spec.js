@@ -20,4 +20,19 @@ describe('<<< Sms Controller: ', () => {
         });
     });
   });
+
+  describe('Get All Sms: ', () => {
+    it('should return all sms messages', (done) => {
+      server
+        .get('/api/v1/sms')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('All text messages retrieved successfully.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
