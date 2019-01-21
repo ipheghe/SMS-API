@@ -2,6 +2,7 @@ import express from 'express';
 import { SmsController } from '../controllers';
 import {
   validateSmsFields,
+  isSmsExisiting,
   isSenderValid,
   isReceiverValid,
 } from '../middlewares/smsValidation';
@@ -34,4 +35,11 @@ smsRoute.get(
   SmsController.getAllMessagesReceivedByAContact
 );
 
+// API route for users to read SMS
+smsRoute.get(
+  '/api/v1/sms/received/:smsId/:receiverId',
+  isSmsExisiting,
+  isReceiverValid,
+  SmsController.readMessage
+);
 export default smsRoute;

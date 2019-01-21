@@ -93,4 +93,21 @@ describe('<<< Sms Controller: ', () => {
           });
       });
   });
+
+  describe('Read Sms: ', () => {
+    it('should return a successful message and set the sms status to read', (done) => {
+      server
+        .get('/api/v1/sms/received/101/102')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.data.smsStatus).to.equal('READ');
+          expect(res.body.data).to.be.a('object');
+          expect(res.body.message).to.equal('Text message viewed successfully.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
