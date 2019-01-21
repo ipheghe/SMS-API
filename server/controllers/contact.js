@@ -1,5 +1,11 @@
-import { Contact } from '../models';
-import { handleErrorMessage, handleSuccessMessage } from '../utils/messageHandler';
+import {
+  Contact,
+  Sms,
+} from '../models';
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from '../utils/messageHandler';
 
 /**
  * @description Contact controller that houses different methods
@@ -44,5 +50,49 @@ export default class ContactController {
         });
     })
     .catch(err => handleErrorMessage(res, 500, err));
+  }
+
+   /**
+   * @description Get all contacts
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} status message
+   */
+  static getAllContacts(req, res) {
+    return Contact.findAll({
+      include: [
+        {
+          model: Sms,
+          as: 'sentMessages',
+          attributes: ['message', 'createdAt'],
+          include: [
+            {
+              model: Contact,
+              as: 'receiver',
+              attributes: ['name', 'phoneNumber'],
+            },
+          ],
+        },
+        {
+          model: Sms,
+          as: 'receivedMessages',
+          attributes: ['message', 'createdAt'],
+          include: [
+            {
+              model: Contact,
+              as: 'sender',
+              attributes: ['name', 'phoneNumber'],
+            },
+          ],
+        },
+      ],
+    })
+      .then(contacts => handleSuccessMessage(res, 200, contacts, 'All contacs retrieved successfully.'))
+      .catch((error) => {
+        const errorMessage = error.errors.map(value => value.message);
+        handleErrorMessage(res, 400, errorMessage);
+      })
+      .catch(err => handleErrorMessage(res, 500, err));
   }
 }
