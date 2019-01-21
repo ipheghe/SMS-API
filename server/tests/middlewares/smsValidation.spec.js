@@ -20,4 +20,32 @@ describe('<<< Sms Validation Middleware: ', () => {
         });
     });
   });
+
+  describe('Valid Sender Validation: ', () => {
+    it('should return an error message for an invalid senderId', (done) => {
+      server
+        .get('/api/v1/sms/sent/b')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Please provide a valid ID');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should return an error message for a non-existent senderId', (done) => {
+      server
+        .get('/api/v1/sms/sent/190')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Sender\'s account not available!');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });

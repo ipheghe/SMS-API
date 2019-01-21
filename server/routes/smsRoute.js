@@ -20,4 +20,11 @@ smsRoute.post(
 // API route for users to get all SMS
 smsRoute.get('/api/v1/sms', SmsController.getAllSmsMessages);
 
+// API route for users to get all sent SMS
+smsRoute.get(
+  '/api/v1/sms/sent/:senderId',
+  isSenderValid,
+  SmsController.getAllMessagesSentByAContact
+);
+
 export default smsRoute;
