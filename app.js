@@ -1,7 +1,10 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import contactRoute from './server/routes';
+import {
+  contactRoute,
+  smsRoute,
+} from './server/routes';
 
 // Set up the express app
 const app = express();
@@ -15,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Require our routes into the application.
 app.use(contactRoute);
+app.use(smsRoute);
 
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 app.get('*', (req, res) => res.status(200).send({
