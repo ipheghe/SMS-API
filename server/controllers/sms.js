@@ -1,4 +1,7 @@
-import { Sms } from '../models';
+import {
+  Sms,
+  Contact,
+} from '../models';
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -31,5 +34,31 @@ export default class SmsController {
         return handleErrorMessage(res, 400, errorMessage);
       })
     .catch(err => handleErrorMessage(res, 500, err));
+  }
+
+  /**
+   * @description Get all SMS
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} response data object
+   */
+  static getAllSmsMessages(req, res) {
+    return Sms.findAll({
+      include: [
+        {
+          model: Contact,
+          as: 'sender',
+          attributes: ['name', 'phoneNumber'],
+        },
+        {
+          model: Contact,
+          as: 'receiver',
+          attributes: ['name', 'phoneNumber'],
+        },
+      ],
+    })
+      .then((messages) => handleSuccessMessage(res, 200, messages, 'All text messages retrieved successfully.'))
+      .catch((err) => handleErrorMessage(res, 500, err));
   }
 }
