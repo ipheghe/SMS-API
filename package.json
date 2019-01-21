@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon --exec babel-node ./bin/www.js",
-    "test": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --exit server/tests/test.js"
+    "test": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --exit server/tests/test.js",
+    "coveralls": "nyc report --reporter=text-lcov  | coveralls"
   },
   "repository": {
     "type": "git",
