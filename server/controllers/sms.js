@@ -61,4 +61,33 @@ export default class SmsController {
       .then((messages) => handleSuccessMessage(res, 200, messages, 'All text messages retrieved successfully.'))
       .catch((err) => handleErrorMessage(res, 500, err));
   }
+
+  /**
+   * @description Get all messages sent by a contact
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} response data object
+   */
+  static getAllMessagesSentByAContact(req, res) {
+    Sms.findAll({
+      where: {
+        senderId: req.params.senderId,
+      },
+      include: [
+        {
+          model: Contact,
+          as: 'receiver',
+          attributes: ['name', 'phoneNumber'],
+        },
+      ],
+    })
+    .then((messages) => {
+      if (messages.length < 1) {
+        return handleErrorMessage(res, 404, 'Contact has no message history');
+      }
+      handleSuccessMessage(res, 200, messages, 'All contact\'s sent text messages retrieved successfully.');
+    })
+    .catch((err) => handleErrorMessage(res, 500, err));
+  }
 }

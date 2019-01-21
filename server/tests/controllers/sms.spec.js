@@ -35,4 +35,33 @@ describe('<<< Sms Controller: ', () => {
         });
     });
   });
+
+  describe('Get Sent Messages: ', () => {
+    it('displays success message after getting all sent messages', (done) => {
+      server
+        .get('/api/v1/sms/sent/101')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.data).to.be.a('array');
+          expect(res.body.message).to.equal('All contact\'s sent text messages retrieved successfully.');
+          if (err) return done(err);
+          done();
+        });
+      });
+
+      it('displays an error message if contact has no history of sent messages', (done) => {
+        server
+          .get('/api/v1/sms/sent/104')
+          .set('Content-Type', 'application/json')
+          .type('form')
+          .end((err, res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.message).to.equal('Contact has no message history');
+            if (err) return done(err);
+            done();
+          });
+      });
+  });
 });
