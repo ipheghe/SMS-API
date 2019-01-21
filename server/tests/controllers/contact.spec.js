@@ -57,4 +57,19 @@ describe('<<< Contact Controller: ', () => {
         });
     });
   });
+
+  describe('Get All Contacts: ', () => {
+    it('should return all contacts', (done) => {
+      server
+        .get('/api/v1/contact')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('All contacs retrieved successfully.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });

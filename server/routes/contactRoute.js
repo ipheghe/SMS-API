@@ -8,4 +8,7 @@ const contactRoute = express.Router();
 contactRoute
   .post('/api/v1/contact', validateContactFields, ContactController.createContact);
 
+// API route to get all contacts
+contactRoute.get('/api/v1/contact', ContactController.getAllContacts);
+
 export default contactRoute;
