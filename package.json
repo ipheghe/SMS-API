@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "babel-node ./bin/www.js",
     "start:dev": "nodemon --exec babel-node ./bin/www.js",
+    "heroku-postbuild": "sequelize db:migrate",
     "test": "sequelize db:migrate:undo:all --env=test&&sequelize db:migrate --env=test  && cross-env NODE_ENV=test nyc mocha --exit server/tests/test.js",
     "coveralls": "nyc report --reporter=text-lcov  | coveralls"
   },
