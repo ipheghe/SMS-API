@@ -20,4 +20,7 @@ contactRoute.get('/api/v1/contact/:contactId', isContactValid, ContactController
 // API route to update contact
 contactRoute.put('/api/v1/contact/:contactId', isContactValid, ContactController.updateContact);
 
+// API route to delete contact
+contactRoute.delete('/api/v1/contact/:contactId', isContactValid, ContactController.deleteContact);
+
 export default contactRoute;

@@ -97,7 +97,7 @@ export default class ContactController {
   }
 
   /**
-   * Get a contact
+   * @description Get a contact
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
@@ -124,7 +124,7 @@ export default class ContactController {
   }
 
   /**
-   * Update a contact
+   * @description Update a contact
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
@@ -153,5 +153,18 @@ export default class ContactController {
         handleErrorMessage(res, 400, 'Please select a field to update');
       })
       .catch((err) => handleErrorMessage(res, 500, err));
+  }
+
+  /**
+   * @description Delete a contact
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} status message
+   */
+  static deleteContact(req, res) {
+    return Contact.destroy({ where: { id: req.params.contactId } })
+    .then(() => handleSuccessMessage(res, 200, null, 'Contact deleted successfully.'))
+    .catch(err => handleErrorMessage(res, 500, err));
   }
 }
