@@ -18,7 +18,7 @@ export default class ContactController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response object
+   * @return {object} response data object
    */
   static createContact(req, res) {
     const {
@@ -57,7 +57,7 @@ export default class ContactController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} status message
+   * @return {object} response data object
    */
   static getAllContacts(req, res) {
     return Contact.findAll({
@@ -101,7 +101,7 @@ export default class ContactController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} status message
+   * @return {object} response data object
    */
   static getContact(req, res) {
     return Contact
@@ -128,7 +128,7 @@ export default class ContactController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} status message
+   * @return {object} response data object
    */
   static updateContact(req, res) {
     const {
@@ -160,7 +160,7 @@ export default class ContactController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} status message
+   * @return {object} response data object
    */
   static deleteContact(req, res) {
     return Contact.destroy({ where: { id: req.params.contactId } })

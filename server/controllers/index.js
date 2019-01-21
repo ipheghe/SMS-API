@@ -1,3 +1,7 @@
 import ContactController from './contact';
+import SmsController from './sms';
 
-export default ContactController;
+export {
+  ContactController,
+  SmsController,
+};

@@ -1,5 +1,5 @@
 import express from 'express';
-import ContactController from '../controllers';
+import { ContactController } from '../controllers';
 import {
   validateContactFields,
   isContactValid,
