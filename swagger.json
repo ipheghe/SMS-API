@@ -1,0 +1,966 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "SMS-API provides a platform for users to send and receive SMS between registerd contact.",
+    "version": "1.0.0",
+    "title": "SMS-API"
+  },
+  "host": "ovie-sms-api-staging.herokuapp.com",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Contact",
+      "description": "Contact Endpoints"
+    },
+    {
+      "name": "Sms",
+      "description": "Sms Endpoints"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/contact": {
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Creates a contact account",
+        "description": "This endpoint uses a post request to create a contact account",
+        "operationId": "createContact",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created contact object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/CreateContact"
+            }
+          },
+          "400": {
+            "description": "Invalid field input"
+          },
+          "409": {
+            "description": "Conflict issues"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Get all contacts",
+        "description": "This retrieves all contacts",
+        "operationId": "getAllContacts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All contacs retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/GetAllContacts"
+            }
+          }
+        }
+      }
+    },
+    "/contact/{contactId}": {
+      "get": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Get contact record",
+        "description": "",
+        "operationId": "getContactRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "The id of contact containg the record to be fetched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation!",
+            "schema": {
+              "$ref": "#/definitions/GetContactRecord"
+            }
+          },
+          "404": {
+            "description": "Contact not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Update contact",
+        "description": "This updates a contact detail",
+        "operationId": "updateContact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "The id of contact containg the record to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated contact object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact Upated SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/UpdateContact"
+            }
+          },
+          "400": {
+            "description": "Invalid recipeId"
+          },
+          "404": {
+            "description": "Contact Not Found!",
+            "schema": {
+              "$ref": "#/definitions/ContactNotFound"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Delete contact",
+        "description": "This deletes contact details.",
+        "operationId": "deleteContact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "The id of contact containg the record to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/DeleteContact"
+            }
+          },
+          "400": {
+            "description": "Invalid contactId"
+          },
+          "404": {
+            "description": "Contact Not Found!",
+            "schema": {
+              "$ref": "#/definitions/ContactNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/sms/{senderId}/{receiverId}": {
+      "post": {
+        "tags": [
+          "Sms"
+        ],
+        "summary": "Creates SMS",
+        "description": "This endpoint uses a post request to create SMS",
+        "operationId": "createSms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "senderId",
+            "in": "path",
+            "description": "The id of contact sending the SMS",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "receiverId",
+            "in": "path",
+            "description": "The id of contact receiving the SMS",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created sms object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Sms"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/CreateSms"
+            }
+          },
+          "400": {
+            "description": "Invalid field input"
+          },
+          "409": {
+            "description": "Conflict issues"
+          }
+        }
+      }
+    },
+    "/sms": {
+      "get": {
+        "tags": [
+          "Sms"
+        ],
+        "summary": "Get all SMS",
+        "description": "This retrieves all SMS",
+        "operationId": "getAllSms",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All text messages retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/GetAllSms"
+            }
+          }
+        }
+      }
+    },
+    "/sms/received/{receiverId}": {
+      "get": {
+        "tags": [
+          "Sms"
+        ],
+        "summary": "Get all received SMS",
+        "description": "",
+        "operationId": "getAllReceivedSms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "receiverId",
+            "in": "path",
+            "description": "The id of the receiver to fetch all SMS",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation!",
+            "schema": {
+              "$ref": "#/definitions/GetAllReceivedSms"
+            }
+          },
+          "400": {
+            "description": "Invalid receiverId"
+          },
+          "404": {
+            "description": "Receiver's account not available!"
+          }
+        }
+      }
+    },
+    "/sms/sent/{senderId}": {
+      "get": {
+        "tags": [
+          "Sms"
+        ],
+        "summary": "Get all sent SMS",
+        "description": "",
+        "operationId": "getAllSentSms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "senderId",
+            "in": "path",
+            "description": "The id of the sender to fetch all SMS",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation!",
+            "schema": {
+              "$ref": "#/definitions/GetAllSentSms"
+            }
+          },
+          "400": {
+            "description": "Invalid senderId"
+          },
+          "404": {
+            "description": "Sender's account not available!"
+          }
+        }
+      }
+    },
+    "/sms/{smsId}": {
+      "delete": {
+        "tags": [
+          "Sms"
+        ],
+        "summary": "Delete SMS",
+        "description": "This deletes SMS.",
+        "operationId": "deleteSms",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "smsId",
+            "in": "path",
+            "description": "The id of sms containg the record to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted SuccessFullly!",
+            "schema": {
+              "$ref": "#/definitions/DeleteSms"
+            }
+          },
+          "400": {
+            "description": "Invalid smsId"
+          },
+          "404": {
+            "description": "Sms Not Found!",
+            "schema": {
+              "$ref": "#/definitions/SmsNotFound"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "emeka"
+        },
+        "phoneNumber": {
+          "type": "integer",
+          "format": "int64",
+          "example": "08036474733"
+        }
+      }
+    },
+    "Sms": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateContact": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Contact account successfully created."
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "vixen2"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "example": "080124353535353"
+            }
+          }
+        }
+      }
+    },
+    "UpdateContact": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Contact updated successfully."
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "okoli"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "example": "080124353535353"
+            }
+          }
+        }
+      }
+    },
+    "DeleteContact": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Contact deleted successfully."
+        }
+      }
+    },
+    "GetContactRecord": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Contact retrieved successfully."
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "emeka"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "08036474733"
+            },
+            "sentMessages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MessageData"
+              }
+            },
+            "receivedMessages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MessageData"
+              }
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2018-01-22T09:33:37.866Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2018-01-22T09:33:37.866Z"
+            }
+          }
+        }
+      }
+    },
+    "ContactNotFound": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Fail"
+        },
+        "message": {
+          "type": "string",
+          "example": "Contact account not available!"
+        }
+      }
+    },
+    "GetRecipeById": {
+      "type": "object",
+      "required": [
+        "message",
+        "recipe"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Recipe Retrieved SuccessFullly!"
+        },
+        "recipe": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "ingredients": {
+              "type": "string"
+            },
+            "directions": {
+              "type": "string"
+            },
+            "imageUrl": {
+              "type": "string"
+            },
+            "views": {
+              "type": "integer"
+            },
+            "upvotes": {
+              "type": "integer"
+            },
+            "downvotes": {
+              "type": "integer"
+            },
+            "notification": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "GetAllContacts": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Contact retrieved successfully."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ContactData"
+          }
+        }
+      }
+    },
+    "ContactData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "emeka"
+        },
+        "phoneNumber": {
+          "type": "integer",
+          "format": "int64",
+          "example": "08036474733"
+        },
+        "sentMessages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageData"
+          }
+        },
+        "receivedMessages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageData"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        }
+      }
+    },
+    "MessageData": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Thank you"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        }
+      }
+    },
+    "CreateSms": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Text message has been successfully sent"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "emeka"
+            }
+          }
+        }
+      }
+    },
+    "DeleteSms": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Text message deleted successfully."
+        }
+      }
+    },
+    "GetAllSms": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "All text messages retrieved successfully."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SmsData"
+          }
+        }
+      }
+    },
+    "GetAllSentSms": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "All contact's sent text messages retrieved successfully."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SentSmsData"
+          }
+        }
+      }
+    },
+    "GetAllReceivedSms": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "All contact's received text messages retrieved successfully."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReceivedSmsData"
+          }
+        }
+      }
+    },
+    "SmsNotFound": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Fail"
+        },
+        "message": {
+          "type": "string",
+          "example": "Sms does not exist"
+        }
+      }
+    },
+    "SmsData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "emeka"
+        },
+        "sender": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Emeka"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "08036474733"
+            }
+          }
+        },
+        "receiver": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Fumi"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "080264974733"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        }
+      }
+    },
+    "SentSmsData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "emeka"
+        },
+        "receiver": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Fumi"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "080264974733"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        }
+      }
+    },
+    "ReceivedSmsData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "emeka"
+        },
+        "sender": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Emeka"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "format": "int64",
+              "example": "08036474733"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2018-01-22T09:33:37.866Z"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about SMS-API",
+    "url": "http://ovie-sms-api-staging.herokuapp.com"
+  }
+}
