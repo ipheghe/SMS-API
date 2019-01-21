@@ -110,4 +110,19 @@ describe('<<< Sms Controller: ', () => {
         });
     });
   });
+
+  describe('Delete Sms: ', () => {
+    it('should return a success message after deleting sms', (done) => {
+      server
+        .delete('/api/v1/sms/105')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Text message deleted successfully.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });

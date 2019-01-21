@@ -42,4 +42,8 @@ smsRoute.get(
   isReceiverValid,
   SmsController.readMessage
 );
+
+// API route for users to delete SMS
+smsRoute.delete('/api/v1/sms/:smsId', isSmsExisiting, SmsController.deleteSms);
+
 export default smsRoute;
