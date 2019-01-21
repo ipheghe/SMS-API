@@ -57,4 +57,40 @@ describe('<<< ContactValidation Middleware: ', () => {
         });
     });
   });
+
+  describe('validContact Validation: ', () => {
+    it('should return an error message for an invalid contactId', (done) => {
+      server
+        .get('/api/v1/contact/a')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send({
+          name: 'emeka',
+          phoneNumber: 2348023451234,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Please enter a valid ID');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should return an error message for a non-existent userId', (done) => {
+      server
+        .get('/api/v1/contact/200')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send({
+          name: 'emeka',
+          phoneNumber: 2348023451234,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Contact account not available!');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
