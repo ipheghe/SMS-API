@@ -159,4 +159,17 @@ export default class SmsController {
     })
     .catch((err) => handleErrorMessage(res, 500, err));
   }
+
+  /**
+   * @description Delete message
+   *
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @return {object} response data object
+   */
+  static deleteSms(req, res) {
+    Sms.destroy({ where: { id: req.params.smsId } })
+    .then(() => handleSuccessMessage(res, 200, null, 'Text message deleted successfully.'))
+    .catch(err => handleErrorMessage(res, 500, err));
+  }
 }

@@ -76,4 +76,32 @@ describe('<<< Sms Validation Middleware: ', () => {
         });
     });
   });
+
+  describe('Valid Sms Validation: ', () => {
+    it('should return an error message for an invalid smsId', (done) => {
+      server
+        .delete('/api/v1/sms/a')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Please provide a valid ID');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should return an error message for a non-existent smsId', (done) => {
+      server
+        .delete('/api/v1/sms/190')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Sms does not exist');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });
