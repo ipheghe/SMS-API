@@ -43,10 +43,10 @@ export const validateContactFields = (req, res, next) => {
  * @return {*} void
  */
 export const isContactValid = (req, res, next) => {
-  if (Number.isNaN(parseInt(req.params.contactId, 10))) {
+  if (Number.isNaN(parseInt(req.params.contactId || req.decoded.contact.id, 10))) {
     return handleErrorMessage(res, 400, 'Please enter a valid ID');
   }
-  Contact.findById(req.params.contactId)
+  Contact.findById(req.params.contactId || req.decoded.contact.id)
     .then((contact) => {
       if (!contact) {
         return handleErrorMessage(res, 404, 'Contact account not available!');

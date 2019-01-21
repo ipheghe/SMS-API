@@ -1,8 +1,11 @@
 import { expect } from 'chai';
 import supertest from 'supertest';
 import app from '../../../app';
+import { tokens } from '../seeders/seeds';
 
 const server = supertest.agent(app);
+
+const authToken = tokens[0];
 
 describe('<<< ContactValidation Middleware: ', () => {
   describe('Create Contact Validation: ', () => {
@@ -63,6 +66,7 @@ describe('<<< ContactValidation Middleware: ', () => {
       server
         .get('/api/v1/contact/a')
         .set('Content-Type', 'application/json')
+        .set('x-access-token', authToken)
         .type('form')
         .send({
           name: 'emeka',
@@ -76,10 +80,11 @@ describe('<<< ContactValidation Middleware: ', () => {
         });
     });
 
-    it('should return an error message for a non-existent userId', (done) => {
+    it('should return an error message for a non-existent contactId', (done) => {
       server
         .get('/api/v1/contact/200')
         .set('Content-Type', 'application/json')
+        .set('x-access-token', authToken)
         .type('form')
         .send({
           name: 'emeka',

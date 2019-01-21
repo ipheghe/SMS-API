@@ -41,6 +41,22 @@ export const isSmsExisiting = (req, res, next) => {
     .catch(error => handleErrorMessage(res, 500, error));
 };
 
+export const isContactSms = (req, res, next) => {
+  Sms
+    .find({ where: {
+      id: req.params.smsId,
+      senderId: req.decoded.contact.id,
+    },
+  })
+    .then((sms) => {
+      if (!sms) {
+        return handleErrorMessage(res, 401, 'Access Denied!');
+      }
+      next();
+    })
+    .catch(error => handleErrorMessage(res, 500, error));
+};
+
 /**
  * @description middleware function to check if sender exists
  *
@@ -50,10 +66,10 @@ export const isSmsExisiting = (req, res, next) => {
  * @return {*} void
  */
 export const isSenderValid = (req, res, next) => {
-  if (Number.isNaN(parseInt(req.params.senderId, 10))) {
+  if (Number.isNaN(parseInt(req.params.senderId || req.decoded.contact.id, 10))) {
     return handleErrorMessage(res, 400, 'Please provide a valid ID');
   }
-  Contact.findById(req.params.senderId)
+  Contact.findById(req.params.senderId || req.decoded.contact.id)
     .then((contact) => {
       if (!contact) {
         return handleErrorMessage(res, 404, 'Sender\'s account not available!');
@@ -70,10 +86,10 @@ export const isSenderValid = (req, res, next) => {
  * @return {*} void
  */
 export const isReceiverValid = (req, res, next) => {
-  if (Number.isNaN(parseInt(req.params.receiverId, 10))) {
+  if (Number.isNaN(parseInt(req.params.receiverId || req.decoded.contact.id, 10))) {
     return handleErrorMessage(res, 400, 'Please provide a valid ID');
   }
-  Contact.findById(req.params.receiverId)
+  Contact.findById(req.params.receiverId || req.decoded.contact.id)
     .then((contact) => {
       if (!contact) {
         return handleErrorMessage(res, 404, 'Receiver\'s account not available!');

@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/ipheghe/SMS-API.svg?branch=develop)](https://travis-ci.org/ipheghe/SMS-API) [![Coverage Status](https://coveralls.io/repos/github/ipheghe/SMS-API/badge.svg)](https://coveralls.io/github/ipheghe/SMS-API)
 # SMS-API
-SMS management API is a RESTful messaging platform that allows users to send and receive messages between registered contacts.
+SMS management API is a RESTful messaging platform that allows registered contacts to send and receive messages.
 
 ## Table of Contents
 - [Application Features](#application-features)
@@ -13,16 +13,16 @@ SMS management API is a RESTful messaging platform that allows users to send and
 - [FAQ](#faq)
 
 # Application Features
-* Users can create contact on the application
-* Users can update contact details
-* Users can delete contact
-* Users can view all contacts
-* Users can view a single contact
-* Users can send SMS
-* Users can delete sent SMS
-* Users can view all SMS
-* Users can view all SMS he/she received
-* Users can view all SMS he/she sent
+* Unauthenticated users can create contact on the application
+* Authenticated users can update contact details
+* Authenticated users can delete contact
+* Unauthenticated users can view all contacts
+* Authenticated users can view a single contact
+* Authenticated users can send SMS
+* Authenticated users can delete sent SMS
+* Authenticated users can view all SMS
+* Authenticated users can view all SMS he/she received
+* Authenticated users can view all SMS he/she sent
 
 # Technology Stack
 * NodeJS
