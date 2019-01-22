@@ -1,3 +1,18 @@
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+export const generateToken = ({ id, name }) => jwt.sign(
+  { contact: { id, name } },
+  process.env.TOKEN_SECRET, { expiresIn: 24 * 60 * 60 }
+).toString();
+
+export const invalidToken = jwt.sign(
+  { contact: { id: 344, username: 'justin' } },
+  'jsjsjjj', { expiresIn: '10s' }
+).toString();
+
 export const seedContacts = [
   {
     id: 101,
@@ -18,6 +33,19 @@ export const seedContacts = [
     id: 104,
     name: 'Obama',
     phoneNumber: 2347033166554,
+  },
+];
+
+export const unRegisteredContacts = [
+  {
+    id: 322,
+    name: 'collins',
+    phoneNumber: 23487873456728,
+  },
+  {
+    id: 323,
+    name: 'merlin',
+    phoneNumber: 23480934567298,
   },
 ];
 
@@ -52,4 +80,13 @@ export const seedSms = [
     receiverId: 104,
     message: 'What were your accomplishments as the President of USA?',
   },
+];
+
+export const tokens = [
+  generateToken(seedContacts[0]),
+  generateToken(seedContacts[1]),
+  generateToken(seedContacts[2]),
+  generateToken(unRegisteredContacts[0]),
+  generateToken('stringToken'),
+  generateToken(seedContacts[3]),
 ];

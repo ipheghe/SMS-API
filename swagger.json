@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "SMS-API provides a platform for users to send and receive SMS between registerd contact.",
+    "description": "SMS Management API provides a platform for registered contacts to send and receive messages.",
     "version": "1.0.0",
     "title": "SMS-API"
   },
-  "host": "ovie-sms-api-staging.herokuapp.com",
+  "host": "ovie-sms-api.herokuapp.com",
   "basePath": "/api/v1",
   "tags": [
     {
@@ -80,42 +80,6 @@
             }
           }
         }
-      }
-    },
-    "/contact/{contactId}": {
-      "get": {
-        "tags": [
-          "Contact"
-        ],
-        "summary": "Get contact record",
-        "description": "",
-        "operationId": "getContactRecord",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "contactId",
-            "in": "path",
-            "description": "The id of contact containg the record to be fetched",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation!",
-            "schema": {
-              "$ref": "#/definitions/GetContactRecord"
-            }
-          },
-          "404": {
-            "description": "Contact not found"
-          }
-        }
       },
       "put": {
         "tags": [
@@ -129,11 +93,11 @@
         ],
         "parameters": [
           {
-            "name": "contactId",
-            "in": "path",
-            "description": "The id of contact containg the record to be updated",
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "in": "body",
@@ -155,6 +119,9 @@
           "400": {
             "description": "Invalid recipeId"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Contact Not Found!",
             "schema": {
@@ -175,11 +142,11 @@
         ],
         "parameters": [
           {
-            "name": "contactId",
-            "in": "path",
-            "description": "The id of contact containg the record to be deleted",
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -192,6 +159,9 @@
           "400": {
             "description": "Invalid contactId"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Contact Not Found!",
             "schema": {
@@ -201,7 +171,92 @@
         }
       }
     },
-    "/sms/{senderId}/{receiverId}": {
+    "/contact/signin": {
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Logs contact into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login contact object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login.",
+            "schema": {
+              "$ref": "#/definitions/SigninContact"
+            }
+          },
+          "400": {
+            "description": "Invalid field input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/contact/{contactId}": {
+      "get": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Get contact record",
+        "description": "",
+        "operationId": "getContactRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "The id of contact containg the record to be fetched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation!",
+            "schema": {
+              "$ref": "#/definitions/GetContactRecord"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Contact not found"
+          }
+        }
+      }
+    },
+    "/sms/contact/{receiverId}": {
       "post": {
         "tags": [
           "Sms"
@@ -217,11 +272,11 @@
         ],
         "parameters": [
           {
-            "name": "senderId",
-            "in": "path",
-            "description": "The id of contact sending the SMS",
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "receiverId",
@@ -250,6 +305,9 @@
           "400": {
             "description": "Invalid field input"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "409": {
             "description": "Conflict issues"
           }
@@ -273,11 +331,14 @@
             "schema": {
               "$ref": "#/definitions/GetAllSms"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
     },
-    "/sms/received/{receiverId}": {
+    "/sms/received": {
       "get": {
         "tags": [
           "Sms"
@@ -293,11 +354,11 @@
         ],
         "parameters": [
           {
-            "name": "receiverId",
-            "in": "path",
-            "description": "The id of the receiver to fetch all SMS",
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -310,13 +371,16 @@
           "400": {
             "description": "Invalid receiverId"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Receiver's account not available!"
           }
         }
       }
     },
-    "/sms/sent/{senderId}": {
+    "/sms/sent": {
       "get": {
         "tags": [
           "Sms"
@@ -332,11 +396,11 @@
         ],
         "parameters": [
           {
-            "name": "senderId",
-            "in": "path",
-            "description": "The id of the sender to fetch all SMS",
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -348,6 +412,9 @@
           },
           "400": {
             "description": "Invalid senderId"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Sender's account not available!"
@@ -368,6 +435,13 @@
         ],
         "parameters": [
           {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "smsId",
             "in": "path",
             "description": "The id of sms containg the record to be deleted",
@@ -384,6 +458,9 @@
           },
           "400": {
             "description": "Invalid smsId"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Sms Not Found!",
@@ -433,6 +510,41 @@
         "message": {
           "type": "string",
           "example": "Contact account successfully created."
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "vixen2"
+            },
+            "phoneNumber": {
+              "type": "integer",
+              "example": "080124353535353"
+            }
+          }
+        }
+      }
+    },
+    "SigninContact": {
+      "type": "object",
+      "required": [
+        "status",
+        "message",
+        "data"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Authentication & Login successful'"
         },
         "data": {
           "type": "object",
@@ -961,6 +1073,6 @@
   },
   "externalDocs": {
     "description": "Find out more about SMS-API",
-    "url": "http://ovie-sms-api-staging.herokuapp.com"
+    "url": "http://ovie-sms-api.herokuapp.com"
   }
 }

@@ -1,8 +1,13 @@
 import supertest from 'supertest';
 import { expect } from 'chai';
 import app from '../../../app';
+import { tokens } from '../seeders/seeds';
 
 const server = supertest.agent(app);
+
+const authToken1 = tokens[0];
+const authToken2 = tokens[1];
+const authToken3 = tokens[2];
 
 describe('<<< Contact Controller: ', () => {
   describe('Create Contact: ', () => {
@@ -58,6 +63,42 @@ describe('<<< Contact Controller: ', () => {
     });
   });
 
+  describe('Signin Contact: ', () => {
+    it('should return message for successful login', (done) => {
+      server
+        .post('/api/v1/contact/signin')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send({
+          name: 'funmi',
+          phoneNumber: 2348023457734,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Authentication & Login successful');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should return an error for invalid login authentication', (done) => {
+      server
+        .post('/api/v1/contact/signin')
+        .set('Content-Type', 'application/json')
+        .type('form')
+        .send({
+          name: 'emekaa',
+          phoneNumber: 2348023467734,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.message).to.equal('Authentication failed.');
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
+
   describe('Get All Contacts: ', () => {
     it('should return all contacts', (done) => {
       server
@@ -78,6 +119,7 @@ describe('<<< Contact Controller: ', () => {
       server
         .get('/api/v1/contact/102')
         .set('Content-Type', 'application/json')
+        .set('x-access-token', authToken2)
         .type('form')
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -92,8 +134,9 @@ describe('<<< Contact Controller: ', () => {
   describe('Update Contact: ', () => {
     it('displays success message after updating a contact successfully', (done) => {
       server
-        .put('/api/v1/contact/101')
+        .put('/api/v1/contact')
         .set('Content-Type', 'application/json')
+        .set('x-access-token', authToken1)
         .type('form')
         .send({ name: 'James' })
         .end((err, res) => {
@@ -107,8 +150,9 @@ describe('<<< Contact Controller: ', () => {
 
     it('displays an error message if user does not input any value to update', (done) => {
       server
-        .put('/api/v1/contact/102')
+        .put('/api/v1/contact')
         .set('Content-Type', 'application/json')
+        .set('x-access-token', authToken2)
         .type('form')
         .end((err, res) => {
           expect(res.status).to.equal(400);
@@ -122,8 +166,9 @@ describe('<<< Contact Controller: ', () => {
   describe('Delete Contact: ', () => {
     it('should return a success message after deleting a contact', (done) => {
       server
-        .delete('/api/v1/contact/103')
+        .delete('/api/v1/contact')
         .set('Content-Type', 'application/json')
+        .set('x-access-token', authToken3)
         .type('form')
         .end((err, res) => {
           expect(res.status).to.equal(200);

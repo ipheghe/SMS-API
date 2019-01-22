@@ -18,14 +18,14 @@ export default class SmsController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response data object
+   * @return {object} status message data
    */
   static createSms(req, res) {
     const { message } = req.body;
 
     Sms.create({
       message,
-      senderId: req.params.senderId,
+      senderId: req.decoded.contact.id,
       receiverId: req.params.receiverId,
     })
       .then(message => handleSuccessMessage(res, 201, message, 'Text message has been successfully sent'))
@@ -41,7 +41,7 @@ export default class SmsController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response data object
+   * @return {object} status message data
    */
   static getAllSmsMessages(req, res) {
     return Sms.findAll({
@@ -67,12 +67,12 @@ export default class SmsController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response data object
+   * @return {object} status message data
    */
   static getAllMessagesSentByAContact(req, res) {
     Sms.findAll({
       where: {
-        senderId: req.params.senderId,
+        senderId: req.decoded.contact.id,
       },
       include: [
         {
@@ -96,12 +96,12 @@ export default class SmsController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response data object
+   * @return {object} status message data
    */
   static getAllMessagesReceivedByAContact(req, res) {
     Sms.findAll({
       where: {
-        receiverId: req.params.receiverId,
+        receiverId: req.decoded.contact.id,
       },
       include: [
         {
@@ -125,13 +125,13 @@ export default class SmsController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response data object
+   * @return {object} status message data
    */
   static readMessage(req, res) {
     Sms.findOne({
       where: {
         id: req.params.smsId,
-        receiverId: req.params.receiverId,
+        receiverId: req.decoded.contact.id,
       },
       include: [
         {
@@ -165,7 +165,7 @@ export default class SmsController {
    *
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
-   * @return {object} response data object
+   * @return {object} status message data
    */
   static deleteSms(req, res) {
     Sms.destroy({ where: { id: req.params.smsId } })
