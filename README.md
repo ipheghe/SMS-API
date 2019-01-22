@@ -51,7 +51,7 @@ sequelize db:migrate
 The server will now be running at `http://localhost:8000`
   
 ## API Documentation
-Access Application API documentation through this link [Here](https://ovie-sms-api-staging.herokuapp.com/api-docs)
+Access Application API documentation through this link [Here](https://ovie-sms-api.herokuapp.com/api-docs)
 
 ## Running the tests
 The application uses the following libraries for testing:
